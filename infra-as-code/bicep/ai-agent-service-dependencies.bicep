@@ -20,6 +20,12 @@ param privateEndpointSubnetResourceId string
 
 // ---- New resources ----
 
+@description('The agent User Managed Identity for the AI Foundry Project. This is used when a user uploads a file to the agent, and the agent needs to search for information in that file.')
+resource agentUserManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview' = {
+  name: 'mi-agent-${baseName}'
+  location: location
+}
+
 @description('This is the log sink for all Azure Diagnostics in the workload.')
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2025-02-01' = {
   name: 'log-workload'
@@ -47,6 +53,7 @@ module deployAgentStorageAccount 'ai-agent-blob-storage.bicep' = {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     debugUserPrincipalId: debugUserPrincipalId
     privateEndpointSubnetResourceId: privateEndpointSubnetResourceId
+    existingAgentUserManagedIdentityName: agentUserManagedIdentity.name
   }
 }
 
@@ -59,6 +66,7 @@ module deployCosmosDbThreadStorageAccount 'cosmos-db.bicep' = {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     debugUserPrincipalId: debugUserPrincipalId
     privateEndpointSubnetResourceId: privateEndpointSubnetResourceId
+    existingAgentUserManagedIdentityName: agentUserManagedIdentity.name
   }
 }
 
@@ -71,6 +79,7 @@ module deployAzureAISearchService 'ai-search.bicep' = {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     debugUserPrincipalId: debugUserPrincipalId
     privateEndpointSubnetResourceId: privateEndpointSubnetResourceId
+    existingAgentUserManagedIdentityName: agentUserManagedIdentity.name
   }
 }
 
@@ -79,5 +88,5 @@ module deployAzureAISearchService 'ai-search.bicep' = {
 output cosmosDbAccountName string = deployCosmosDbThreadStorageAccount.outputs.cosmosDbAccountName
 output storageAccountName string = deployAgentStorageAccount.outputs.storageAccountName
 output aiSearchName string = deployAzureAISearchService.outputs.aiSearchName
-// output deploymentScriptManagedIdentityId string = deploymentScriptManagedIdentity.id
 output logAnalyticsWorkspaceName string = logAnalyticsWorkspace.name
+output agentUserManagedIdentityName string = agentUserManagedIdentity.name
