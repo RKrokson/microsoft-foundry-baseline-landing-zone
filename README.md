@@ -233,7 +233,7 @@ The following steps are required to deploy the infrastructure from the command l
 1. Get workload prequisites outputs
 
    ```bash
-   FOUNDRY_NAME=$(az deployment sub show --name foundry-chat-prereq-lz-baseline-${BASE_NAME} --query "properties.outputs.aiFoundryName.value" -o tsv)
+   FOUNDRY_NAME=$(az deployment sub show --name foundry-chat-prereq-lz-baseline-${BASE_NAME} --query "properties.outputs.foundryName.value" -o tsv)
    COSMOSDB_ACCOUNT_NAME=$(az deployment sub show --name foundry-chat-prereq-lz-baseline-${BASE_NAME} --query "properties.outputs.cosmosDbAccountName.value" -o tsv)
    STORAGE_ACCOUNT_NAME=$(az deployment sub show --name foundry-chat-prereq-lz-baseline-${BASE_NAME} --query "properties.outputs.storageAccountName.value" -o tsv)
    AISEARCH_ACCOUNT_NAME=$(az deployment sub show --name foundry-chat-prereq-lz-baseline-${BASE_NAME} --query "properties.outputs.aiSearchAccountName.value" -o tsv)
